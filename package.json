@@ -1,0 +1,23 @@
+{
+  "name": "uni-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "type": "module",
+  "bin": {
+    "uni-cli": "dist/esm/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts",
+    "dev": "tsup"
+  },
+  "author": "HokageYeah",
+  "license": "ISC",
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  }
+}
