@@ -4,7 +4,15 @@ import inquirer from "inquirer";
 import { askObj } from "./ask";
 import { askObjType } from "../types/askTypes";
 import { GeneratorTemplate } from "./generatorTemplate";
-console.log("create.ts");
+
+const askInquirer = (name: string, targetDir: string) => {
+  inquirer.prompt(askObj).then((askObj: askObjType) => {
+    // 创建项目class
+    const generatorTemplate = new GeneratorTemplate(name, targetDir, askObj);
+    generatorTemplate.create();
+  });
+  // console.log("createProject", name, options, targetDir);
+};
 
 export const createProject = (name: string, options: any) => {
   // process.cwd获取当前的工作目录 esmodule不能使用__dirname
@@ -16,7 +24,7 @@ export const createProject = (name: string, options: any) => {
     // 强制同步删除
     if (options.force) {
       fs.rmSync(targetDir, { recursive: true });
-      console.log("强制同步删除");
+      askInquirer(name, targetDir)
     } else {
       // 通过inquirer：询问用户是否确定要覆盖 or 取消
       inquirer
@@ -24,14 +32,14 @@ export const createProject = (name: string, options: any) => {
           {
             name: "action",
             type: "list",
-            message: "Target already exists",
+            message: "目录下项目已经存在，是否覆盖?",
             choices: [
               {
-                name: "overwrite",
+                name: "覆盖",
                 value: "overwrite",
               },
               {
-                name: "cancel",
+                name: "取消",
                 value: false,
               },
             ],
@@ -40,15 +48,10 @@ export const createProject = (name: string, options: any) => {
         .then(({ action }) => {
           if (!action) return;
           fs.rmSync(targetDir, { recursive: true });
-          console.log("强制同步删除");
+          askInquirer(name, targetDir)
         });
     }
+  }else{
+    askInquirer(name, targetDir)
   }
-  inquirer.prompt(askObj).then((askObj: askObjType) => {
-    console.log("answers", askObj);
-    // 创建项目class
-    const generatorTemplate = new GeneratorTemplate(name, targetDir, askObj);
-    generatorTemplate.create();
-  });
-  console.log("createProject", name, options, targetDir);
 };

@@ -9,7 +9,7 @@ let json = JSON.parse(jsonBuf.toString());
 
 // 脚手架版本号
 program.version(json.version, '-v, --version', 'output the uni-cli version')
-console.log('hellow uni-cli---------');
+// console.log('hellow uni-cli---------');
 
 
 program
