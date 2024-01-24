@@ -11,6 +11,8 @@ export class GeneratorTemplate {
   name: string;
   target: string;
   ask: askObjType;
+  isGitlab = true;
+
   // name 项目名称
   // target 创建项目的路径
   // 用户输入的 作者和项目描述 信息
@@ -26,6 +28,7 @@ export class GeneratorTemplate {
     try {
       const repolist = await getRepolist();
       spinner.succeed("获取git仓库的项目列表成功✅");
+      // console.log('git仓库列表：', repolist);
       if (!repolist) return;
       return repolist.map((item: any) => item.name);
     } catch (error: any) {
@@ -42,7 +45,10 @@ export class GeneratorTemplate {
     return repo;
   }
   async downLoadTemplate(repo: string) {
-    const requestUrl = `HokageYeah/${repo}`;
+    const requestUrl = this.isGitlab
+      ? `frontend/uni-app/${repo}`
+      : `HokageYeah/${repo}`;
+    console.log("下载地址：", requestUrl);
     const spinner = ora("模板工程下载中...");
     spinner.start();
     try {
