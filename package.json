@@ -1,6 +1,6 @@
 {
   "name": "uni-cli",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
@@ -11,8 +11,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
-    "dev": "tsup"
+    "dev": "tsup",
+    "build": "tsup && ts-node scripts/build.ts ",
+    "publishw:private": "ts-node scripts/publish.ts  --registry http://nexus.xxt.cn/repository/npm-group/",
+    "publishw:public": "ts-node scripts/publish.ts"
   },
+  "keywords": [
+    "uni",
+    "uni-cli",
+    "cli",
+    "vue-cli",
+    "vue"
+  ],
   "author": "HokageYeah",
   "license": "ISC",
   "devDependencies": {

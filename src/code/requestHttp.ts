@@ -1,6 +1,6 @@
+import { isGitlab } from "@/types/askTypes";
 import downloadGitRepo from "download-git-repo";
 
-const isGitlab = true;
 const gitToken = "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";
 const gitLabToken = "glpat-zxzDgfjb1pM1RWxXJLwD";
 
@@ -25,10 +25,10 @@ export const httpDownloadTemp = (requestUrl: string, target: string) => {
       target,
       {
         clone: true,
-        headers: {
-          private_token: gitLabToken,
-          Authorization: `Bearer ${gitLabToken}`,
-        },
+        // headers: {
+        //   private_token: gitLabToken,
+        //   Authorization: `Bearer ${gitLabToken}`,
+        // },
         timeout: 10000, 
         checkout: 'master',
         depth: 1,

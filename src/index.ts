@@ -4,7 +4,8 @@
 import { program } from "commander";
 import fs from 'node:fs';
 import { createProject } from './code/create';
-let jsonBuf = fs.readFileSync('./package.json');
+import {packageJsonPath} from '../scripts/build'
+let jsonBuf = fs.readFileSync(packageJsonPath);
 let json = JSON.parse(jsonBuf.toString());
 
 // 脚手架版本号

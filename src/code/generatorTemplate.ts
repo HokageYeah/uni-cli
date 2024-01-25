@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { askObjType } from "../types/askTypes";
+import { askObjType, isGitlab } from "../types/askTypes";
 import { getRepolist, httpDownloadTemp } from "./requestHttp";
 // 引入ora工具：命令行loading 动效
 import ora from "ora";
@@ -11,7 +11,6 @@ export class GeneratorTemplate {
   name: string;
   target: string;
   ask: askObjType;
-  isGitlab = true;
 
   // name 项目名称
   // target 创建项目的路径
@@ -45,10 +44,9 @@ export class GeneratorTemplate {
     return repo;
   }
   async downLoadTemplate(repo: string) {
-    const requestUrl = this.isGitlab
-      ? `frontend/uni-app/${repo}`
-      : `HokageYeah/${repo}`;
-    console.log("下载地址：", requestUrl);
+    const requestUrl = isGitlab
+      ? `direct:https://gitlab.xxt.cn/frontend/uni-app/${repo}.git/#master`
+      : `github:HokageYeah/${repo}#master`;
     const spinner = ora("模板工程下载中...");
     spinner.start();
     try {
