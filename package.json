@@ -14,7 +14,8 @@
     "dev": "tsup",
     "build": "tsup && ts-node scripts/build.ts ",
     "publishw:private": "ts-node scripts/publish.ts  --registry http://nexus.xxt.cn/repository/npm-group/",
-    "publishw:public": "ts-node scripts/publish.ts"
+    "publishw:public": "ts-node scripts/publish.ts",
+    "test-build": "ts-node scripts/build.ts"
   },
   "keywords": [
     "uni",
