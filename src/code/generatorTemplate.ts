@@ -26,15 +26,16 @@ export class GeneratorTemplate {
     spinner.start();
     try {
       const repolist = await getRepolist();
-      // console.log('git仓库列表：', repolist);
+      console.log('git仓库列表：', repolist);
       if (!repolist){
         spinner.fail("获取git仓库的项目列表失败❎, 列表为空");
         return null;
       };
-      if(repolist instanceof Object && repolist.hasOwnProperty('error')){
+      if(repolist instanceof Object && (repolist.hasOwnProperty('error') || repolist.hasOwnProperty('message'))){
         const error: any = repolist.error;
         const error_description: string = repolist.error_description;
-        spinner.fail(`获取git仓库的项目列表失败❎, 错误类型: ${error} 错误描述: ${error_description}`);
+        const message: string = repolist.message;
+        spinner.fail(`获取git仓库的项目列表失败❎, 错误类型: ${error} 错误描述: ${error_description} 错误信息: ${message}`);
         return null;
       }
       spinner.succeed("获取git仓库的项目列表成功✅");

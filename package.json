@@ -27,6 +27,7 @@
   "author": "HokageYeah",
   "license": "ISC",
   "devDependencies": {
+    "@types/copyfiles": "^2.4.4",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.11.5",
     "copyfiles": "^2.4.1",

@@ -55,7 +55,7 @@ false：不生成 Source Map 文件。
 const copyFilesPlugin = {
   name: "copy-files-plugin",
   setup: () => {
-    copyfiles(["src/data/*.json", "dist"], { up: 1 }, (err) => {
+    copyfiles(["src/virtualTkn/*.json", "dist"], { up: 1 }, (err) => {
       if (err) {
         console.error("复制文件时发生错误:", err);
       } else {
@@ -76,4 +76,5 @@ export default defineConfig({
   clean: true, //在打包之前是否清空输出目录（默认为 true）。如果你希望保留之前的构建结果，可以将其设置为 false
   minify: true, //是否启用代码压缩（默认为 false）。启用后，tsup 将会使用 terser 对输出的代码进行压缩。
   legacyOutput: true, //true：采用传统的输出目录结构。每个源文件将产生一个对应的输出文件。
+  esbuildPlugins: [copyFilesPlugin], //打包插件
 });
