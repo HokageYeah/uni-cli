@@ -5,6 +5,7 @@ import { program } from "commander";
 import fs from 'node:fs';
 import { createProject } from './code/create';
 import {packageJsonPath} from '../scripts/build'
+import { setToken, getToken, setIsGitlab, getIsGitlab } from './code/handleToken';
 let jsonBuf = fs.readFileSync(packageJsonPath);
 let json = JSON.parse(jsonBuf.toString());
 
@@ -26,7 +27,53 @@ program
     .action((name, options) => {
         createProject(name, options)
     })
-
-
+program
+    .command('setlabtoken <token>')
+    .alias('slt')
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .description('set gitlab token')
+    .action((token, options) => {
+        setToken(true, token, options)
+    })
+program
+    .command('sethubtoken <token>')
+    .alias('sht')
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .description('set github token')
+    .action((token, options) => {
+        setToken(false, token, options)
+    })
+program
+    .command('getlabtoken')
+    .alias('glt')
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .description('get gitlab token')
+    .action(() => {
+        getToken(true)
+    })
+program
+    .command('gethubtoken')
+    .alias('ght')
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .description('get github token')
+    .action(() => {
+        getToken(false)
+    })
+program
+    .command('setisgitlab <isGitlab>')
+    .alias('silt')
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .description('set is gitlab')
+    .action((isGitlab, options) => {
+        setIsGitlab(isGitlab, options)
+    })
+program
+    .command('getisgitlab')
+    .alias('gil')
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .description('get is gitlab')
+    .action(() => {
+        getIsGitlab()
+    })
 // 解析命令行参数
 program.parse(process.argv);

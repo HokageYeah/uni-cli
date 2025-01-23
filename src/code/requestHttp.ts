@@ -1,22 +1,37 @@
-import { isGitlab } from "@/types/askTypes";
+import path from "path";
+import { isGitlab } from "../types/askTypes";
 import downloadGitRepo from "download-git-repo";
-
-const gitToken = "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";
-const gitLabToken = "glpat-zxzDgfjb1pM1RWxXJLwD";
+import yeahUrl from "node:url";
+import fs from "fs";
 
 // GitHub api接口请求次数限制破解: https://www.jianshu.com/p/b567ea7f1d28
 export const getRepolist = () => {
+  // 在type为module 下  __dirname 为 __dirname is not defined 为commonjs的规范
+  const tokenJsonPath = setPathName("../virtualTkn/virtualTkn.json");
+  // 读取virtualTkn.json文件(同步读取)
+  const tokenJson = fs.readFileSync(tokenJsonPath, "utf-8");
+  const tokenJsonObj = JSON.parse(tokenJson);
+  const gitLabToken = tokenJsonObj.gitLabToken;
+  const gitHubToken = tokenJsonObj.gitHubToken;
+  const isGitlab = tokenJsonObj.isGitlab;
   const url = isGitlab
     ? `https://gitlab.xxt.cn/api/v4/groups/1683/projects?private_token=${gitLabToken}`
     : "https://api.github.com/users/HokageYeah/repos?per_page=60";
   return fetch(url, {
     headers: {
-      Authorization: `token${isGitlab ? "" : gitToken}`,
+      Authorization: `token${isGitlab ? "" : gitHubToken}`,
     },
   })
     .then((res) => res.json())
     .then((res) => res);
 };
+
+export const setPathName = (pathName: string) => {
+  const url = import.meta.url;
+  const __dirname = path.dirname(yeahUrl.fileURLToPath(url));
+  const crossPlatformPath = path.resolve(__dirname, pathName);
+  return crossPlatformPath;
+}
 
 export const httpDownloadTemp = (requestUrl: string, target: string) => {
   return new Promise<void>((resolve, reject) => {

@@ -26,9 +26,18 @@ export class GeneratorTemplate {
     spinner.start();
     try {
       const repolist = await getRepolist();
-      spinner.succeed("获取git仓库的项目列表成功✅");
       // console.log('git仓库列表：', repolist);
-      if (!repolist) return;
+      if (!repolist){
+        spinner.fail("获取git仓库的项目列表失败❎, 列表为空");
+        return null;
+      };
+      if(repolist instanceof Object && repolist.hasOwnProperty('error')){
+        const error: any = repolist.error;
+        const error_description: string = repolist.error_description;
+        spinner.fail(`获取git仓库的项目列表失败❎, 错误类型: ${error} 错误描述: ${error_description}`);
+        return null;
+      }
+      spinner.succeed("获取git仓库的项目列表成功✅");
       return repolist.map((item: any) => item.name);
     } catch (error: any) {
       spinner.fail(`获取git仓库的项目列表失败❎${error}`);
@@ -59,8 +68,10 @@ export class GeneratorTemplate {
   async create() {
     // 获取git仓库的项目列表
     const repos = await this.getRepos();
+    if (!repos) return;
     // 获取用户git仓库的选择列表
     const choiceRepo = await this.getChoiceRepo(repos);
+    if (!choiceRepo) return;
     // 下载选择的项目模板
     await this.downLoadTemplate(choiceRepo);
     // 下载完成后获取项目的package.json文件更改，作者和描述
