@@ -15,7 +15,7 @@ export const getRepolist = () => {
   const gitHubToken = tokenJsonObj.gitHubToken;
   const isGitlab = tokenJsonObj.isGitlab;
   const url = isGitlab
-    ? `https://gitlab.xxt.cn/api/v4/groups/1683/projects?private_token=${gitLabToken}`
+    ? `https://gitlab.xxt.cn/api/v4/groups/1683/projects?private_token=${gitLabToken}&per_page=100`
     : "https://api.github.com/users/HokageYeah/repos?per_page=60";
   return fetch(url, {
     headers: {

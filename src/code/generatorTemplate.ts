@@ -25,8 +25,7 @@ export class GeneratorTemplate {
     const spinner = ora("获取git仓库的项目列表中...");
     spinner.start();
     try {
-      const repolist = await getRepolist();
-      console.log('git仓库列表：', repolist);
+      let repolist = await getRepolist();
       if (!repolist){
         spinner.fail("获取git仓库的项目列表失败❎, 列表为空");
         return null;
@@ -38,7 +37,16 @@ export class GeneratorTemplate {
         spinner.fail(`获取git仓库的项目列表失败❎, 错误类型: ${error} 错误描述: ${error_description} 错误信息: ${message}`);
         return null;
       }
-      spinner.succeed("获取git仓库的项目列表成功✅");
+      // 如果是gitlab 则过滤出只有uni开头的项目
+      if(isGitlab) {
+        spinner.succeed(`获取gitLab仓库的项目列表成功✅ ${repolist.length}个项目`);
+        repolist = repolist.filter((item: any) => item.name.startsWith("uni"));
+        spinner.succeed(`过滤以uni开头的项目列表成功✅ ${repolist.length}个项目`);
+        spinner.succeed(`gitLab仓库的uni开头项目列表：\n${repolist.map((item: any) => item.name).join("\n")}`);
+      }else{
+        spinner.succeed(`获取git仓库的项目列表成功✅ ${repolist.length}个项目`);
+        spinner.succeed(`git仓库的项目列表：\n${repolist.map((item: any) => item.name).join("\n")}`);
+      }
       return repolist.map((item: any) => item.name);
     } catch (error: any) {
       spinner.fail(`获取git仓库的项目列表失败❎${error}`);
